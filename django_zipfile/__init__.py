@@ -23,7 +23,7 @@ class TemplateZipFile(ZipFile, object):
 
             container.add_template('mimetype')
             container.add_template('META-INF/container.xml')
-            container.add_template('chapter1.html', context=c)
+            container.add_template('chapter1.html', context=context)
 
             container.close()
             return response
