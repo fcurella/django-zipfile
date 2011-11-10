@@ -1,7 +1,7 @@
 Django Zipfile
 ======================================
 
-A subclass of ``zipfile.Zipfile`` that work with Django templates.
+A subclass of ``zipfile.Zipfile`` that works with Django templates.
 
 
 Usage::
