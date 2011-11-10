@@ -33,7 +33,6 @@ class TemplateZipFile(ZipFile, object):
         return super(TemplateZipFile, self).__init__(file, *args, **kwargs)
 
     def add_template(self, template_name, filename=None, context=None):
-        self.debug = 3
         if context is None:
             c = Context({})
         else:
