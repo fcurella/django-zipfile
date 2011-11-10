@@ -16,6 +16,7 @@ Usage::
         }
         response = HttpResponse(mimetype='application/octet-stream')
         response['Content-Disposition'] = 'attachment; filename=myfile.zip'
+        
         container = TemplateZipFile(response, mode='w', compression=ZIP_DEFLATED, template_root='myapp/myzipskeleton/')
 
         container.add_template('mimetype')
