@@ -1,5 +1,6 @@
 VERSION = (0, 0, 1)
 
+import sys
 from zipfile import ZipFile
 from django.template import Context
 from django.template.loader import get_template
@@ -32,7 +33,10 @@ class TemplateZipFile(ZipFile, object):
         self.template_root = template_root
         return super(TemplateZipFile, self).__init__(file, *args, **kwargs)
 
-    def add_template(self, template_name, filename=None, context=None):
+    def add_template(self, template_name, filename=None, context=None, compress_type=None):
+        if compress_type is not None:
+            if compress_type != self.compress_type and sys.version_info < (2, 7):
+                raise "Python2.7 is required for individual file compression."
         if context is None:
             c = Context({})
         else:
@@ -49,4 +53,7 @@ class TemplateZipFile(ZipFile, object):
                 arc_filename = template_name.split(self.template_root)[1]
             else:
                 arc_filename = template_name.split('/')[-1]
-        self.writestr(arc_filename, render)
+        if compress_type is not None:
+            self.writestr(arc_filename, render, compress_type)
+        else:
+            self.writestr(arc_filename, render)

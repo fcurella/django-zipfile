@@ -5,15 +5,15 @@ from django_zipfile import VERSION
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
-    
-requirements = []
+
+requirements = ['django']
 
 setup(
     name = "Django Zipfile",
     version = ".".join(map(str, VERSION)),
-    description = "",
+    description = "A ZipFile subclass that accepts Django Templates",
     long_description = read('README.rst'),
-    url = '',
+    url = 'https://github.com/fcurella/django-zipfile',
     license = 'MIT',
     author = 'Flavio Curella',
     author_email = 'flavio.curella@gmail.com',
