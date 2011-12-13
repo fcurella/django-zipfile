@@ -12,7 +12,7 @@ Usage::
     def myview(request, object_id):
         obj = get_object_or_404(MyModel, pk=object_id)
         context = {
-            'object': object
+            'object': obj
         }
         response = HttpResponse(mimetype='application/octet-stream')
         response['Content-Disposition'] = 'attachment; filename=myfile.zip'
