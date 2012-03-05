@@ -49,11 +49,7 @@ class TemplateZipFile(ZipFile, object):
         template_name = templates[0]
 
         if self.template_root is not None:
-            if isinstance(self.template_root, basestring):
-                template_root = self.template_root
-            else:
-                template_root = self.template_root[0]
-
+            template_root = self.template_root[0]
             return template_name.split(template_root)[1]
         return template_name.split('/')[-1]
 
@@ -75,7 +71,7 @@ class TemplateZipFile(ZipFile, object):
         render = render_to_string(templates_hierarchy, c)
 
         if filename is None:
-            filename = self._filename(template_list)
+            filename = self._filename(templates_hierarchy)
 
         if compress_type is not None:
             self.writestr(filename, render, compress_type)
