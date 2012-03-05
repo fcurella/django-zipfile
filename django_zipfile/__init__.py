@@ -1,6 +1,7 @@
 VERSION = (0, 0, 1)
 
 import sys
+import os
 from zipfile import ZipFile
 from django.template import Context
 from django.template.loader import get_template
@@ -33,10 +34,13 @@ class TemplateZipFile(ZipFile, object):
         self.template_root = template_root
         return super(TemplateZipFile, self).__init__(file, *args, **kwargs)
 
-    def add_template(self, template_name, filename=None, context=None, compress_type=None):
+    def _check_individual_compression_supported(self, compress_type):
         if compress_type is not None:
             if compress_type != self.compress_type and sys.version_info < (2, 7):
                 raise "Python2.7 is required for individual file compression."
+
+    def add_template(self, template_name, filename=None, context=None, compress_type=None):
+        self._check_individual_compression_supported(compress_type)
         if context is None:
             c = Context({})
         else:
@@ -50,10 +54,18 @@ class TemplateZipFile(ZipFile, object):
 
         if filename is None:
             if self.template_root is not None:
-                arc_filename = template_name.split(self.template_root)[1]
+                filename = template_name.split(self.template_root)[1]
             else:
-                arc_filename = template_name.split('/')[-1]
+                filename = template_name.split('/')[-1]
         if compress_type is not None:
-            self.writestr(arc_filename, render, compress_type)
+            self.writestr(filename, render, compress_type)
         else:
-            self.writestr(arc_filename, render)
+            self.writestr(filename, render)
+
+    def add_template_dir(self, directory, context=None, compress_type=None):
+        self._check_individual_compression_supported(compress_type)
+
+        for root, dirs, files in os.walk(directory):
+            for f in files:
+                template_name = root + "/" + f
+                self.add_template(template_name, context=context, compress_type=compress_type)

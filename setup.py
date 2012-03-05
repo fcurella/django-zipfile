@@ -29,6 +29,5 @@ setup(
         'Framework :: Django',
     ],
     install_requires = requirements,
-    tests_require = ["nose",],
-    test_suite = "nose.collector",
+    tests_require = [],
 )

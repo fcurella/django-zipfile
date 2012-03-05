@@ -4,7 +4,9 @@ Django Zipfile
 A subclass of ``zipfile.Zipfile`` that works with Django templates.
 
 
-Usage::
+Usage:
+
+::
 
     from zipfile import ZIP_DEFLATED
     from django_zipfile import TemplateZipFile
