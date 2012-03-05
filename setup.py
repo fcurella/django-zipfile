@@ -9,7 +9,7 @@ def read(fname):
 requirements = ['django']
 
 setup(
-    name = "Django Zipfile",
+    name = "django-zipfile",
     version = ".".join(map(str, VERSION)),
     description = "A ZipFile subclass that accepts Django Templates",
     long_description = read('README.rst'),
