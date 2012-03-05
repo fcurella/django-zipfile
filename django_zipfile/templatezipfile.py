@@ -29,7 +29,7 @@ class TemplateZipFile(ZipFile, object):
             return response
     """
     def __init__(self, file, template_root=None, *args, **kwargs):
-        self.template_root = template_root
+        self.template_root = self._to_list(template_root)
         return super(TemplateZipFile, self).__init__(file, *args, **kwargs)
 
     def _check_individual_compression_supported(self, compress_type):
@@ -37,10 +37,30 @@ class TemplateZipFile(ZipFile, object):
             if compress_type != self.compress_type and sys.version_info < (2, 7):
                 raise "Python2.7 is required for individual file compression."
 
-    def _template_name(self, template):
+    def _templates(self, template_list):
         if self.template_root is not None:
-            return self.template_root + template
-        return template
+            templates = []
+            for root in self.template_root:
+                templates += [os.path.join(root, template) for template in template_list]
+            return templates
+        return template_list
+
+    def _filename(self, templates):
+        template_name = templates[0]
+
+        if self.template_root is not None:
+            if isinstance(self.template_root, basestring):
+                template_root = self.template_root
+            else:
+                template_root = self.template_root[0]
+
+            return template_name.split(template_root)[1]
+        return template_name.split('/')[-1]
+
+    def _to_list(self, var):
+        if isinstance(var, basestring):
+            return [var]
+        return var
 
     def add_template(self, template_list, filename=None, context=None, compress_type=None):
         self._check_individual_compression_supported(compress_type)
@@ -49,23 +69,13 @@ class TemplateZipFile(ZipFile, object):
         else:
             c = Context(context)
 
-        templates = []
+        template_list = self._to_list(template_list)
+        templates_hierarchy = self._templates(template_list)
 
-        if isinstance(template_list, basestring):
-            templates = [self._template_name(template_list)]
-        else:
-            for template in template_list:
-                templates.append(self._template_name(template))
-
-        render = render_to_string(templates, c)
+        render = render_to_string(templates_hierarchy, c)
 
         if filename is None:
-            template_name = templates[0]
-
-            if self.template_root is not None:
-                filename = template_name.split(self.template_root)[1]
-            else:
-                filename = template_name.split('/')[-1]
+            filename = self._filename(template_list)
 
         if compress_type is not None:
             self.writestr(filename, render, compress_type)
