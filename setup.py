@@ -29,5 +29,4 @@ setup(
         'Framework :: Django',
     ],
     install_requires = requirements,
-    tests_require = [],
 )
