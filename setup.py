@@ -6,7 +6,7 @@ from django_zipfile import VERSION
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-requirements = ['django']
+requirements = []
 
 setup(
     name = "django-zipfile",
