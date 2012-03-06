@@ -11,7 +11,7 @@ class TestTemplateZipFile(unittest.TestCase):
     def setUp(self):
         os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
         self.fh = StringIO()
-        self.zipfile1 = TemplateZipFile(self.fh, mode='w', compression=ZIP_DEFLATED, template_root=['override/', 'default/'])
+        self.zipfile1 = TemplateZipFile(self.fh, mode='w', compression=ZIP_DEFLATED, template_root=['override', 'default/'])
         self.zipfile2 = TemplateZipFile(self.fh, mode='w', compression=ZIP_DEFLATED, template_root='override/',)
 
     def test_names(self):

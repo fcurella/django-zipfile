@@ -30,7 +30,11 @@ class TemplateZipFile(ZipFile, object):
             return response
     """
     def __init__(self, file, template_root=None, *args, **kwargs):
-        self.template_root = self._to_list(template_root)
+        self.template_root = []
+        for root in self._to_list(template_root):
+            if not root.endswith('/'):
+                root += '/'
+            self.template_root.append(root)
         return super(TemplateZipFile, self).__init__(file, *args, **kwargs)
 
     def _check_individual_compression_supported(self, compress_type):
@@ -42,7 +46,7 @@ class TemplateZipFile(ZipFile, object):
         if self.template_root is not None:
             templates = []
             for root in self.template_root:
-                templates += [os.path.join(root, template) for template in template_list]
+                templates += ["%s%s" % (root, template) for template in template_list]
             return templates
         return template_list
 
