@@ -95,4 +95,4 @@ class TemplateZipFile(ZipFile, object):
         for root, dirs, files in os.walk(directory):
             for f in files:
                 template_name = root + "/" + f
-                self.add_template(template_name, context=context, compress_type=compress_type)
+                self.write_template(template_name, context=context, compress_type=compress_type)
