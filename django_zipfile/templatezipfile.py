@@ -3,6 +3,7 @@ import os
 from zipfile import ZipFile
 from django.template import Context
 from django.template.loader import render_to_string
+from django.template.loader import TemplateDoesNotExist
 
 
 class TemplateZipFile(ZipFile, object):
@@ -58,7 +59,7 @@ class TemplateZipFile(ZipFile, object):
             return [var]
         return var
 
-    def add_template(self, template_list, filename=None, context=None, compress_type=None):
+    def add_template(self, template_list, filename=None, context=None, compress_type=None, optional=False):
         self._check_individual_compression_supported(compress_type)
         if context is None:
             c = Context({})
@@ -67,8 +68,14 @@ class TemplateZipFile(ZipFile, object):
 
         template_list = self._to_list(template_list)
         templates_hierarchy = self._templates(template_list)
-
-        render = render_to_string(templates_hierarchy, c)
+ 
+        try:
+            render = render_to_string(templates_hierarchy, c)
+        except TemplateDoesNotExist as e:
+            if optional:
+                return
+            else:
+                raise e
 
         if filename is None:
             filename = self._filename(templates_hierarchy)

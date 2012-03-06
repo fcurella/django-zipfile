@@ -2,6 +2,8 @@ import unittest
 from StringIO import StringIO
 from django_zipfile import TemplateZipFile
 from zipfile import ZIP_DEFLATED
+from django.template.loader import render_to_string
+from django.template.loader import TemplateDoesNotExist
 import os
 
 
@@ -48,6 +50,9 @@ class TestTemplateZipFile(unittest.TestCase):
 
         templates = self.zipfile2._templates(['folderone/onetwo.txt', 'folderone/oneone.txt'])
         self.assertEqual(['override/folderone/onetwo.txt', 'override/folderone/oneone.txt'], templates)
+
+    def test_adding_files(self):
+        self.assertRaises(TemplateDoesNotExist, self.zipfile1.add_template, 'abc.html')
 
 if __name__ == '__main__':
     unittest.main()
