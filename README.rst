@@ -27,3 +27,34 @@ Usage:
 
         container.close()
         return response
+
+You can also specify multiple roots for your templates:
+
+::
+
+    container = TemplateZipFile(response, mode='w', compression=ZIP_DEFLATED, template_root=['myapp/myzipskeleton/override/', 'myapp/myzipskeleton/default/'])
+
+as well as multiple templates when you add files:
+
+::
+
+    container.add_template(['override.html', 'default.html'], filename="chapter1.html")
+
+TemplateZipFile will look for templates in the specified order, first by root, then by template name. For example:
+
+::
+
+    myzipfile = TemplateZipFile(response, mode='w', compression=ZIP_DEFLATED, template_root=['override/', 'default/'])
+    myzipfile.add_template(['two.txt', 'one.txt'], filename='myfile.txt')
+
+    # Will use the first existing template from ['override/two.txt', 'override/one.txt', 'default/two.txt', 'default/one.txt']
+
+If none of the templates can be found, ``add_template`` will raise a TemplateDoesNotExist error.
+
+You can specify a file as optional with ``optional=True``
+
+::
+
+    myzipfile.add_template(['two.txt', 'one.txt'], filename='myfile.txt', optional=True)
+
+Doing so will silently swallow the TemplateDoesNotExist exception.
