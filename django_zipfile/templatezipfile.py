@@ -22,9 +22,9 @@ class TemplateZipFile(ZipFile, object):
             response['Content-Disposition'] = 'attachment; filename=myfile.zip'
             container = TemplateZipFile(response, mode='w', compression=ZIP_DEFLATED, template_root='myapp/myzipskeleton/')
 
-            container.add_template('mimetype')
-            container.add_template('META-INF/container.xml')
-            container.add_template('chapter1.html', context=context)
+            container.write_template('mimetype')
+            container.write_template('META-INF/container.xml')
+            container.write_template('chapter1.html', context=context)
 
             container.close()
             return response
@@ -63,7 +63,7 @@ class TemplateZipFile(ZipFile, object):
             return [var]
         return var
 
-    def add_template(self, template_list, filename=None, context=None, compress_type=None, optional=False):
+    def write_template(self, template_list, filename=None, context=None, compress_type=None, optional=False):
         self._check_individual_compression_supported(compress_type)
         if context is None:
             c = Context({})
@@ -89,7 +89,7 @@ class TemplateZipFile(ZipFile, object):
         else:
             self.writestr(filename, render)
 
-    def add_template_dir(self, directory, context=None, compress_type=None):
+    def write_template_dir(self, directory, context=None, compress_type=None):
         self._check_individual_compression_supported(compress_type)
 
         for root, dirs, files in os.walk(directory):

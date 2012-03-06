@@ -52,7 +52,7 @@ class TestTemplateZipFile(unittest.TestCase):
         self.assertEqual(['override/folderone/onetwo.txt', 'override/folderone/oneone.txt'], templates)
 
     def test_adding_files(self):
-        self.assertRaises(TemplateDoesNotExist, self.zipfile1.add_template, 'abc.html')
+        self.assertRaises(TemplateDoesNotExist, self.zipfile1.write_template, 'abc.html')
 
 if __name__ == '__main__':
     unittest.main()

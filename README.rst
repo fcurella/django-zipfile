@@ -21,9 +21,9 @@ Usage:
         
         container = TemplateZipFile(response, mode='w', compression=ZIP_DEFLATED, template_root='myapp/myzipskeleton/')
 
-        container.add_template('mimetype')
-        container.add_template('META-INF/container.xml')
-        container.add_template('chapter1.html', context=context)
+        container.write_template('mimetype')
+        container.write_template('META-INF/container.xml')
+        container.write_template('chapter1.html', context=context)
 
         container.close()
         return response
@@ -38,23 +38,23 @@ as well as multiple templates when you add files:
 
 ::
 
-    container.add_template(['override.html', 'default.html'], filename="chapter1.html")
+    container.write_template(['override.html', 'default.html'], filename="chapter1.html")
 
 TemplateZipFile will look for templates in the specified order, first by root, then by template name. For example:
 
 ::
 
     myzipfile = TemplateZipFile(response, mode='w', compression=ZIP_DEFLATED, template_root=['override/', 'default/'])
-    myzipfile.add_template(['two.txt', 'one.txt'], filename='myfile.txt')
+    myzipfile.write_template(['two.txt', 'one.txt'], filename='myfile.txt')
 
     # Will use the first existing template from ['override/two.txt', 'override/one.txt', 'default/two.txt', 'default/one.txt']
 
-If none of the templates can be found, ``add_template`` will raise a TemplateDoesNotExist error.
+If none of the templates can be found, ``write_template`` will raise a TemplateDoesNotExist error.
 
 You can specify a file as optional with ``optional=True``
 
 ::
 
-    myzipfile.add_template(['two.txt', 'one.txt'], filename='myfile.txt', optional=True)
+    myzipfile.write_template(['two.txt', 'one.txt'], filename='myfile.txt', optional=True)
 
 Doing so will silently swallow the TemplateDoesNotExist exception.
