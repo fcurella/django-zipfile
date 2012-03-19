@@ -85,9 +85,9 @@ class TemplateZipFile(ZipFile, object):
             filename = self._filename(templates_hierarchy)
 
         if compress_type is not None:
-            self.writestr(filename, render, compress_type)
+            self.writestr(filename, render.encode('utf-8'), compress_type)
         else:
-            self.writestr(filename, render)
+            self.writestr(filename, render.encode('utf-8'))
 
     def write_template_dir(self, directory, context=None, compress_type=None):
         self._check_individual_compression_supported(compress_type)
