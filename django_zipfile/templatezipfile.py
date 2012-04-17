@@ -75,7 +75,7 @@ class TemplateZipFile(ZipFile, object):
  
         try:
             render = render_to_string(templates_hierarchy, c)
-        except TemplateDoesNotExist as e:
+        except TemplateDoesNotExist, e:
             if optional:
                 return
             else:
