@@ -51,6 +51,14 @@ class TestTemplateZipFile(unittest.TestCase):
         templates = self.zipfile2._templates(['folderone/onetwo.txt', 'folderone/oneone.txt'])
         self.assertEqual(['override/folderone/onetwo.txt', 'override/folderone/oneone.txt'], templates)
 
+        templates = self.zipfile2._templates([u'snowman_\u2603.txt'])
+        filename = self.zipfile2._filename(templates)
+        self.assertEqual('snowman_\xe2\x98\x83.txt', filename)
+
+        templates = self.zipfile2._templates(['snowman_\xe2\x98\x83.txt'])
+        filename = self.zipfile2._filename(templates)
+        self.assertEqual('snowman_\xe2\x98\x83.txt', filename)
+
     def test_adding_files(self):
         self.assertRaises(TemplateDoesNotExist, self.zipfile1.write_template, 'abc.html')
 

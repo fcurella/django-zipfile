@@ -55,8 +55,17 @@ class TemplateZipFile(ZipFile, object):
 
         if self.template_root is not None:
             template_root = self.template_root[0]
-            return template_name.split(template_root)[1]
-        return template_name.split('/')[-1]
+            filename = template_name.split(template_root)[1]
+        else:
+            filename = template_name.split('/')[-1]
+
+        # Zipfile.writestr`` on Python2.5 can't handle unicode.
+        # Note that trying to re-encode a utf-8 encodef str fails if it contains
+        # characters outside of the ASCII range. Hence te type-check.
+        if isinstance(filename, unicode):
+            filename = filename.encode('utf-8')
+
+        return filename
 
     def _to_list(self, var):
         if isinstance(var, basestring):
@@ -85,9 +94,9 @@ class TemplateZipFile(ZipFile, object):
             filename = self._filename(templates_hierarchy)
 
         if compress_type is not None:
-            self.writestr(filename.encode('utf-8'), render.encode('utf-8'), compress_type)
+            self.writestr(filename, render.encode('utf-8'), compress_type)
         else:
-            self.writestr(filename.encode('utf-8'), render.encode('utf-8'))
+            self.writestr(filename, render.encode('utf-8'))
 
     def write_template_dir(self, directory, context=None, compress_type=None):
         self._check_individual_compression_supported(compress_type)
