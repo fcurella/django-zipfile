@@ -4,15 +4,16 @@ from zipfile import ZipFile
 from django.template import Context
 from django.template.loader import render_to_string
 from django.template.loader import TemplateDoesNotExist
+from django.utils.encoding import smart_str
 
 
 class TemplateZipFile(ZipFile, object):
     """
     Usage::
-    
+
         from zipfile import ZIP_DEFLATED
         from django_zipfile import TemplateZipFile
-    
+
         def myview(request, object_id):
             obj = get_object_or_404(MyModel, pk=object_id)
             context = {
@@ -62,10 +63,7 @@ class TemplateZipFile(ZipFile, object):
         # Zipfile.writestr`` on Python2.5 can't handle unicode.
         # Note that trying to re-encode a utf-8 encodef str fails if it contains
         # characters outside of the ASCII range. Hence te type-check.
-        if isinstance(filename, unicode):
-            filename = filename.encode('utf-8')
-
-        return filename
+        return smart_str(filename)
 
     def _to_list(self, var):
         if isinstance(var, basestring):
