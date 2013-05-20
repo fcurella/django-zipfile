@@ -1,2 +1,1 @@
-
 from django_zipfile.templatezipfile import TemplateZipFile
