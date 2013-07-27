@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 import sys
 from os import path
+from django import VERSION as django_version
+
+if sys.version_info[0] > 2 and django_version < (1, 5, 0):
+    sys.exit(0)
 
 from django.conf import settings
 
