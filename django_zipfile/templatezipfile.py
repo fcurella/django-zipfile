@@ -6,6 +6,8 @@ from django.template.loader import render_to_string
 from django.template.loader import TemplateDoesNotExist
 from django.utils.encoding import smart_str
 
+import six
+
 
 class TemplateZipFile(ZipFile, object):
     """
@@ -66,9 +68,9 @@ class TemplateZipFile(ZipFile, object):
         return smart_str(filename)
 
     def _to_list(self, var):
-        if hasattr(var, '__iter__'):
-            return var
-        return [var]
+        if isinstance(var, six.string_types):
+            return [var]
+        return var
 
     def write_template(self, template_list, filename=None, context=None, compress_type=None, optional=False):
         self._check_individual_compression_supported(compress_type)
