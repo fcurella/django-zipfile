@@ -1,14 +1,6 @@
 #!/usr/bin/env python
 import sys
 from os import path
-from django import VERSION as django_version
-
-if django_version < (1, 5, 0) and sys.version_info < (2, 6, 0):
-    sys.exit(0)
-
-if django_version < (1, 5, 0) and sys.version_info >= (3, 0, 0):
-    sys.exit(0)
-
 from django.conf import settings
 
 PROJECT_DIR = path.dirname(path.realpath(__file__))
