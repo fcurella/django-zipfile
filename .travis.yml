@@ -1,6 +1,6 @@
 language: python
 install:
-  - pip install -q $DJANGO
+  - pip install -q $DJANGO six
 python:
   - "2.5"
   - "2.6"
