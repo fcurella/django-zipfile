@@ -82,11 +82,11 @@ class TemplateZipFile(ZipFile, object):
 
         try:
             render = render_to_string(templates_hierarchy, c)
-        except TemplateDoesNotExist, e:
+        except TemplateDoesNotExist:
             if optional:
                 return
             else:
-                raise e
+                raise
 
         if filename is None:
             filename = self._filename(templates_hierarchy)
