@@ -62,7 +62,7 @@ class TemplateZipFile(ZipFile, object):
 
         # Zipfile.writestr`` on Python2.5 can't handle unicode.
         # Note that trying to re-encode a utf-8 encodef str fails if it contains
-        # characters outside of the ASCII range. Hence te type-check.
+        # characters outside of the ASCII range. Hence the type-check.
         return smart_str(filename)
 
     def _to_list(self, var):
