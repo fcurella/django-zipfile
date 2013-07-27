@@ -2,7 +2,6 @@ import unittest
 from StringIO import StringIO
 from django_zipfile import TemplateZipFile
 from zipfile import ZIP_DEFLATED
-from django.template.loader import render_to_string
 from django.template.loader import TemplateDoesNotExist
 import os
 
