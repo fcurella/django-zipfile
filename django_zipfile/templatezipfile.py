@@ -66,9 +66,9 @@ class TemplateZipFile(ZipFile, object):
         return smart_str(filename)
 
     def _to_list(self, var):
-        if isinstance(var, basestring):
-            return [var]
-        return var
+        if hasattr(var, '__iter__'):
+            return var
+        return [var]
 
     def write_template(self, template_list, filename=None, context=None, compress_type=None, optional=False):
         self._check_individual_compression_supported(compress_type)
@@ -79,7 +79,7 @@ class TemplateZipFile(ZipFile, object):
 
         template_list = self._to_list(template_list)
         templates_hierarchy = self._templates(template_list)
- 
+
         try:
             render = render_to_string(templates_hierarchy, c)
         except TemplateDoesNotExist, e:
