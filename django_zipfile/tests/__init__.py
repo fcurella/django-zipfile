@@ -1,5 +1,8 @@
 import unittest
-from StringIO import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 from django_zipfile import TemplateZipFile
 from zipfile import ZIP_DEFLATED
 from django.template.loader import TemplateDoesNotExist
