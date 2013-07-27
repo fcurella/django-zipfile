@@ -1,8 +1,11 @@
+# -*- encoding: utf-8
 import unittest
-from StringIO import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 from django_zipfile import TemplateZipFile
 from zipfile import ZIP_DEFLATED
-from django.template.loader import render_to_string
 from django.template.loader import TemplateDoesNotExist
 import os
 
@@ -53,7 +56,7 @@ class TestTemplateZipFile(unittest.TestCase):
 
         templates = self.zipfile2._templates([u'snowman_\u2603.txt'])
         filename = self.zipfile2._filename(templates)
-        self.assertEqual('snowman_\xe2\x98\x83.txt', filename)
+        self.assertEqual('snowman_☃.txt', filename)
 
         templates = self.zipfile2._templates(['snowman_\xe2\x98\x83.txt'])
         filename = self.zipfile2._filename(templates)

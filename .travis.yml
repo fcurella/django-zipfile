@@ -1,0 +1,12 @@
+language: python
+install:
+  - pip install -q $DJANGO six --use-mirrors
+python:
+  - "2.6"
+  - "2.7"
+  - "3.3"
+env:
+  - DJANGO="Django>=1.5,<1.6"
+before_script:
+  - "export PYTHONPATH=$TRAVIS_BUILD_DIR:$PYTHONPATH;"
+script: python django_zipfile/tests/runtests.py

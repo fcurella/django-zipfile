@@ -6,6 +6,8 @@ from django.template.loader import render_to_string
 from django.template.loader import TemplateDoesNotExist
 from django.utils.encoding import smart_str
 
+import six
+
 
 class TemplateZipFile(ZipFile, object):
     """
@@ -62,11 +64,11 @@ class TemplateZipFile(ZipFile, object):
 
         # Zipfile.writestr`` on Python2.5 can't handle unicode.
         # Note that trying to re-encode a utf-8 encodef str fails if it contains
-        # characters outside of the ASCII range. Hence te type-check.
+        # characters outside of the ASCII range. Hence the type-check.
         return smart_str(filename)
 
     def _to_list(self, var):
-        if isinstance(var, basestring):
+        if isinstance(var, six.string_types):
             return [var]
         return var
 
@@ -79,14 +81,14 @@ class TemplateZipFile(ZipFile, object):
 
         template_list = self._to_list(template_list)
         templates_hierarchy = self._templates(template_list)
- 
+
         try:
             render = render_to_string(templates_hierarchy, c)
-        except TemplateDoesNotExist, e:
+        except TemplateDoesNotExist:
             if optional:
                 return
             else:
-                raise e
+                raise
 
         if filename is None:
             filename = self._filename(templates_hierarchy)
