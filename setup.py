@@ -1,7 +1,7 @@
 import os
 from setuptools import setup, find_packages
 
-VERSION = (0, 2, 0)
+VERSION = "0.2.0"
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
@@ -10,7 +10,7 @@ requirements = ['django>=1.3', 'six']
 
 setup(
     name = "django-zipfile",
-    version = ".".join(map(str, VERSION)),
+    version = VERSION,
     description = "A ZipFile subclass that accepts Django Templates",
     long_description = read('README.rst'),
     url = 'https://github.com/fcurella/django-zipfile',
