@@ -1,6 +1,6 @@
 language: python
 install:
-  - pip install -q $DJANGO six --use-mirrors
+  - pip install -q $DJANGO six
 python:
   - "2.6"
   - "2.7"
