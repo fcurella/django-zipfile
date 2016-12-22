@@ -3,7 +3,7 @@ import unittest
 try:
     from StringIO import StringIO
 except ImportError:
-    from io import StringIO
+    from io import BytesIO as StringIO
 from django_zipfile import TemplateZipFile
 from zipfile import ZIP_DEFLATED
 from django.template.loader import TemplateDoesNotExist
