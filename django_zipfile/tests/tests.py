@@ -55,7 +55,7 @@ class TestTemplateZipFile(unittest.TestCase):
 
         templates = self.zipfile2._templates([u'snowman_\u2603.txt'])
         filename = self.zipfile2._filename(templates)
-        self.assertEqual('snowman_☃.txt', filename)
+        self.assertEqual(u'snowman_☃.txt', filename)
 
         templates = self.zipfile2._templates(['snowman_\xe2\x98\x83.txt'])
         filename = self.zipfile2._filename(templates)
