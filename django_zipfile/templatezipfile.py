@@ -3,7 +3,6 @@ from zipfile import ZipFile
 from django.template import Context
 from django.template.loader import render_to_string
 from django.template.loader import TemplateDoesNotExist
-from django.utils.encoding import smart_str
 
 import six
 
@@ -56,10 +55,7 @@ class TemplateZipFile(ZipFile, object):
         else:
             filename = template_name.split('/')[-1]
 
-        # Zipfile.writestr`` on Python2.5 can't handle unicode.
-        # Note that trying to re-encode a utf-8 encodef str fails if it contains
-        # characters outside of the ASCII range. Hence the type-check.
-        return smart_str(filename)
+        return filename
 
     def _to_list(self, var):
         if isinstance(var, six.string_types):
