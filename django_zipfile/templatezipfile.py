@@ -30,6 +30,7 @@ class TemplateZipFile(ZipFile, object):
             container.close()
             return response
     """
+
     def __init__(self, file, template_root=None, *args, **kwargs):
         self.template_root = []
         for root in self._to_list(template_root):
