@@ -1,4 +1,3 @@
-import sys
 import os
 from zipfile import ZipFile
 from django.template import Context
@@ -40,11 +39,6 @@ class TemplateZipFile(ZipFile, object):
             self.template_root.append(root)
         return super(TemplateZipFile, self).__init__(file, *args, **kwargs)
 
-    def _check_individual_compression_supported(self, compress_type):
-        if compress_type is not None:
-            if compress_type != self.compress_type and sys.version_info < (2, 7):
-                raise "Python2.7 is required for individual file compression."
-
     def _templates(self, template_list):
         if self.template_root is not None:
             templates = []
@@ -73,7 +67,6 @@ class TemplateZipFile(ZipFile, object):
         return var
 
     def write_template(self, template_list, filename=None, context=None, compress_type=None, optional=False):
-        self._check_individual_compression_supported(compress_type)
         if context is None:
             c = Context({})
         else:
@@ -99,7 +92,6 @@ class TemplateZipFile(ZipFile, object):
             self.writestr(filename, render.encode('utf-8'))
 
     def write_template_dir(self, directory, context=None, compress_type=None):
-        self._check_individual_compression_supported(compress_type)
 
         for root, dirs, files in os.walk(directory):
             for f in files:
