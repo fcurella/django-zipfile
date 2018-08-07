@@ -17,6 +17,7 @@ setup(
     author='Flavio Curella',
     author_email='flavio.curella@gmail.com',
     packages=find_packages(exclude=['tests']),
+    test_suite='tests.runtests.runtests',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',

@@ -1,6 +1,5 @@
 import os
 from zipfile import ZipFile
-from django.template import Context
 from django.template.loader import render_to_string
 from django.template.loader import TemplateDoesNotExist
 
