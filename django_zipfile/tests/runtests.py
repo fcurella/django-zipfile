@@ -17,7 +17,7 @@ settings.configure(
         'django.contrib.sites',
         'django_zipfile'
     ],
-    ROOT_URLCONF='django_zipfiles.tests.urls',
+    ROOT_URLCONF='django_zipfile.tests.urls',
     TEMPLATES=[
         {
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
