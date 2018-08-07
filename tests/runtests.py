@@ -6,19 +6,19 @@ from django.conf import settings
 PROJECT_DIR = path.dirname(path.realpath(__file__))
 
 
-settings.configure(
-    DATABASES={
+SETTINGS = {
+    'DATABASES': {
         'default': {'ENGINE': 'django.db.backends.sqlite3'}
     },
-    INSTALLED_APPS=[
+    'INSTALLED_APPS': [
         'django.contrib.auth',
         'django.contrib.sessions',
         'django.contrib.contenttypes',
         'django.contrib.sites',
         'django_zipfile'
     ],
-    ROOT_URLCONF='django_zipfile.tests.urls',
-    TEMPLATES=[
+    'ROOT_URLCONF': 'tests.urls',
+    'TEMPLATES': [
         {
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
             'APP_DIRS': True,
@@ -38,24 +38,25 @@ settings.configure(
             },
         },
     ],
-    MIDDLEWARE_CLASSES=(
+    'MIDDLEWARE_CLASSES': (
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.common.CommonMiddleware',
         'django.middleware.csrf.CsrfViewMiddleware',
         'django.contrib.auth.middleware.AuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
     ),
-    ALLOWED_HOSTS=['*'],
-    SITE_ID=1,
-)
+    'ALLOWED_HOSTS': ['*'],
+    'SITE_ID': 1,
+}
 
 
 def runtests(*test_args):
     import django.test.utils
+    settings.configure(**SETTINGS)
     django.setup()
     runner_class = django.test.utils.get_runner(settings)
     test_runner = runner_class(verbosity=1, interactive=True)
-    failures = test_runner.run_tests(['django_zipfile'])
+    failures = test_runner.run_tests(['tests'])
     sys.exit(failures)
 
 if __name__ == '__main__':
