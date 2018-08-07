@@ -1,7 +1,11 @@
 test:
-	python django_zipfile/tests/runtests.py
+	python setup.py test
 
-release:
-	rm -rf dist
+clean:
+	rm -rf build dist
+
+build: clean
 	python setup.py sdist bdist_wheel
+
+release: build
 	twine upload dist/*
