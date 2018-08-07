@@ -17,9 +17,33 @@ settings.configure(
         'django.contrib.sites',
         'django_zipfile'
     ],
-#    ROOT_URLCONF='recommends.tests.urls',
-    TEMPLATE_DIRS=(
-        path.join(PROJECT_DIR, 'templates'),
+    ROOT_URLCONF='django_zipfiles.tests.urls',
+    TEMPLATES=[
+        {
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'APP_DIRS': True,
+            'DIRS': [
+                path.join(PROJECT_DIR, 'templates'),
+            ],
+            'OPTIONS': {
+                'context_processors': [
+                    'django.contrib.auth.context_processors.auth',
+                    'django.template.context_processors.debug',
+                    'django.template.context_processors.i18n',
+                    'django.template.context_processors.media',
+                    'django.template.context_processors.static',
+                    'django.template.context_processors.tz',
+                    'django.contrib.messages.context_processors.messages',
+                ],
+            },
+        },
+    ],
+    MIDDLEWARE_CLASSES=(
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.common.CommonMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
     ),
     ALLOWED_HOSTS=['*'],
     SITE_ID=1,
@@ -28,6 +52,7 @@ settings.configure(
 
 def runtests(*test_args):
     import django.test.utils
+    django.setup()
     runner_class = django.test.utils.get_runner(settings)
     test_runner = runner_class(verbosity=1, interactive=True)
     failures = test_runner.run_tests(['django_zipfile'])

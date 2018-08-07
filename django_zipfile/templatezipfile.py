@@ -1,10 +1,8 @@
-import sys
 import os
 from zipfile import ZipFile
 from django.template import Context
 from django.template.loader import render_to_string
 from django.template.loader import TemplateDoesNotExist
-from django.utils.encoding import smart_str
 
 import six
 
@@ -32,18 +30,14 @@ class TemplateZipFile(ZipFile, object):
             container.close()
             return response
     """
+
     def __init__(self, file, template_root=None, *args, **kwargs):
         self.template_root = []
         for root in self._to_list(template_root):
             if not root.endswith('/'):
                 root += '/'
             self.template_root.append(root)
-        return super(TemplateZipFile, self).__init__(file, *args, **kwargs)
-
-    def _check_individual_compression_supported(self, compress_type):
-        if compress_type is not None:
-            if compress_type != self.compress_type and sys.version_info < (2, 7):
-                raise "Python2.7 is required for individual file compression."
+        super(TemplateZipFile, self).__init__(file, *args, **kwargs)
 
     def _templates(self, template_list):
         if self.template_root is not None:
@@ -62,10 +56,7 @@ class TemplateZipFile(ZipFile, object):
         else:
             filename = template_name.split('/')[-1]
 
-        # Zipfile.writestr`` on Python2.5 can't handle unicode.
-        # Note that trying to re-encode a utf-8 encodef str fails if it contains
-        # characters outside of the ASCII range. Hence the type-check.
-        return smart_str(filename)
+        return filename
 
     def _to_list(self, var):
         if isinstance(var, six.string_types):
@@ -73,17 +64,14 @@ class TemplateZipFile(ZipFile, object):
         return var
 
     def write_template(self, template_list, filename=None, context=None, compress_type=None, optional=False):
-        self._check_individual_compression_supported(compress_type)
         if context is None:
-            c = Context({})
-        else:
-            c = Context(context)
+            context = {}
 
         template_list = self._to_list(template_list)
         templates_hierarchy = self._templates(template_list)
 
         try:
-            render = render_to_string(templates_hierarchy, c)
+            render = render_to_string(templates_hierarchy, context)
         except TemplateDoesNotExist:
             if optional:
                 return
@@ -99,7 +87,6 @@ class TemplateZipFile(ZipFile, object):
             self.writestr(filename, render.encode('utf-8'))
 
     def write_template_dir(self, directory, context=None, compress_type=None):
-        self._check_individual_compression_supported(compress_type)
 
         for root, dirs, files in os.walk(directory):
             for f in files:
