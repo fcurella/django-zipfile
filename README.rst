@@ -9,7 +9,7 @@ A subclass of ``zipfile.Zipfile`` that works with Django templates.
 
 Usage:
 
-::
+.. code-block:: python
 
     from zipfile import ZIP_DEFLATED
     from django_zipfile import TemplateZipFile
@@ -22,7 +22,12 @@ Usage:
         response = HttpResponse(mimetype='application/octet-stream')
         response['Content-Disposition'] = 'attachment; filename=myfile.zip'
         
-        container = TemplateZipFile(response, mode='w', compression=ZIP_DEFLATED, template_root='myapp/myzipskeleton/')
+        container = TemplateZipFile(
+            response,
+            mode='w',
+            compression=ZIP_DEFLATED,
+            template_root='myapp/myzipskeleton/',
+        )
 
         container.write_template('mimetype')
         container.write_template('META-INF/container.xml')
@@ -33,31 +38,42 @@ Usage:
 
 You can also specify multiple roots for your templates:
 
-::
+.. code-block:: python
 
-    container = TemplateZipFile(response, mode='w', compression=ZIP_DEFLATED, template_root=['myapp/myzipskeleton/override/', 'myapp/myzipskeleton/default/'])
+    container = TemplateZipFile(
+        response,
+        mode='w',
+        compression=ZIP_DEFLATED,
+        template_root=['myapp/myzipskeleton/override/', 'myapp/myzipskeleton/default/'],
+    )
 
 as well as multiple templates when you add files:
 
-::
+.. code-block:: python
 
     container.write_template(['override.html', 'default.html'], filename="chapter1.html")
 
-TemplateZipFile will look for templates in the specified order, first by root, then by template name. For example:
+``TemplateZipFile`` will look for templates in the specified order, first by root, then by template name. For example:
 
-::
+.. code-block:: python
 
-    myzipfile = TemplateZipFile(response, mode='w', compression=ZIP_DEFLATED, template_root=['override/', 'default/'])
+    myzipfile = TemplateZipFile(
+        response,
+        mode='w',
+        compression=ZIP_DEFLATED,
+        template_root=['override/', 'default/'],
+    )
     myzipfile.write_template(['two.txt', 'one.txt'], filename='myfile.txt')
 
-    # Will use the first existing template from ['override/two.txt', 'override/one.txt', 'default/two.txt', 'default/one.txt']
+    # Will use the first existing template from
+    # ['override/two.txt', 'override/one.txt', 'default/two.txt', 'default/one.txt']
 
-If none of the templates can be found, ``write_template`` will raise a TemplateDoesNotExist error.
+If none of the templates can be found, ``write_template`` will raise a ``TemplateDoesNotExist`` error.
 
 You can specify a file as optional with ``optional=True``
 
-::
+.. code-block:: python
 
     myzipfile.write_template(['two.txt', 'one.txt'], filename='myfile.txt', optional=True)
 
-Doing so will silently swallow the TemplateDoesNotExist exception.
+Doing so will silently swallow the ``TemplateDoesNotExist`` exception.
