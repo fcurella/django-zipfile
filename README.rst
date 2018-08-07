@@ -1,6 +1,9 @@
 Django Zipfile
 ======================================
 
+.. image:: https://travis-ci.org/fcurella/django-zipfile.svg?branch=master
+    :target: https://travis-ci.org/fcurella/django-zipfile
+
 A subclass of ``zipfile.Zipfile`` that works with Django templates.
 
 
