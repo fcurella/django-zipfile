@@ -37,7 +37,7 @@ class TemplateZipFile(ZipFile, object):
             if not root.endswith('/'):
                 root += '/'
             self.template_root.append(root)
-        return super(TemplateZipFile, self).__init__(file, *args, **kwargs)
+        super(TemplateZipFile, self).__init__(file, *args, **kwargs)
 
     def _templates(self, template_list):
         if self.template_root is not None:
@@ -65,15 +65,13 @@ class TemplateZipFile(ZipFile, object):
 
     def write_template(self, template_list, filename=None, context=None, compress_type=None, optional=False):
         if context is None:
-            c = Context({})
-        else:
-            c = Context(context)
+            context = {}
 
         template_list = self._to_list(template_list)
         templates_hierarchy = self._templates(template_list)
 
         try:
-            render = render_to_string(templates_hierarchy, c)
+            render = render_to_string(templates_hierarchy, context)
         except TemplateDoesNotExist:
             if optional:
                 return
